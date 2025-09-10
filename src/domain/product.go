@@ -1,9 +1,13 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	"github.com/oklog/ulid/v2"
+)
 
 type Product struct {
-	ID          string    `json:"id" db:"id"`
+	ID          ulid.ULID `json:"id" db:"id"`
 	Name        string    `json:"name" db:"name"`
 	Description string    `json:"description" db:"description"`
 	Price       float64   `json:"price" db:"price"`

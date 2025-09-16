@@ -11,11 +11,11 @@ import (
 
 type ProductRepository interface {
 	Create(ctx context.Context, product *domain.Product) error
-	GetProductByID(ctx context.Context, id int64) (*domain.Product, error)
+	GetProductByID(ctx context.Context, id ulid.ULID) (*domain.Product, error)
 	ListProducts(ctx context.Context) ([]*domain.Product, error)
-	ReduceStock(ctx context.Context, id int64, quantity int) error
+	ReduceStock(ctx context.Context, id ulid.ULID, quantity int) error
 	Update(ctx context.Context, product *domain.Product) error
-	Delete(ctx context.Context, id int64) error
+	Delete(ctx context.Context, id ulid.ULID) error
 }
 
 type postgresProductRepository struct {
@@ -48,9 +48,9 @@ func (r *postgresProductRepository) Create(ctx context.Context, product *domain.
 	return nil
 }
 
-func (r *postgresProductRepository) GetProductByID(ctx context.Context, id int64) (*domain.Product, error) {
+func (r *postgresProductRepository) GetProductByID(ctx context.Context, id ulid.ULID) (*domain.Product, error) {
 
-	if id == 0 {
+	if id == (ulid.ULID{}) {
 		return nil, fmt.Errorf("Error when searching for product by ID: %w", domain.ErrInvalidID)
 	}
 
@@ -85,8 +85,8 @@ func (r *postgresProductRepository) ListProducts(ctx context.Context) ([]*domain
 	return products, nil
 }
 
-func (r *postgresProductRepository) ReduceStock(ctx context.Context, id int64, quantity int) error {
-	if id == 0 {
+func (r *postgresProductRepository) ReduceStock(ctx context.Context, id ulid.ULID, quantity int) error {
+	if id == (ulid.ULID{}) {
 		return fmt.Errorf("Error when reducing stock: %w", domain.ErrInvalidID)
 	}
 	if quantity <= 0 {
@@ -115,9 +115,9 @@ func (r *postgresProductRepository) Update(ctx context.Context, product *domain.
 	return nil
 }
 
-func (r *postgresProductRepository) Delete(ctx context.Context, id int64) error {
+func (r *postgresProductRepository) Delete(ctx context.Context, id ulid.ULID) error {
 
-	if id == 0 {
+	if id == (ulid.ULID{}) {
 		return fmt.Errorf("Error when deleting product: %w", domain.ErrInvalidID)
 	}
 

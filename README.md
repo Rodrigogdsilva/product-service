@@ -6,7 +6,7 @@
 
 ## 📖 Sobre o Projeto
 
-Este é o **Microsserviço de Produtos**, uma parte fundamental do sistema de e-commerce distribuído. [cite_start]Desenvolvido em Go, a sua responsabilidade principal é ser a fonte da verdade para todo o catálogo de produtos, gerindo informações como nome, preço e controlo de stock. [cite: 55, 62]
+Este é o **Microsserviço de Produtos**, uma parte fundamental do sistema de e-commerce distribuído. Desenvolvido em Go, a sua responsabilidade principal é ser a fonte da verdade para todo o catálogo de produtos, gerindo informações como nome, preço e controlo de stock. [cite: 55, 62]
 
 Este serviço expõe endpoints públicos para a consulta de produtos e endpoints internos protegidos para a gestão do catálogo, que são consumidos por outros serviços, como o **Serviço de Pedidos**.
 
@@ -15,14 +15,14 @@ Este serviço expõe endpoints públicos para a consulta de produtos e endpoints
 * Consulta dos detalhes de um produto específico.
 * Endpoint interno para a criação de novos produtos.
 * Endpoint interno para a atualização de stock.
-* [cite_start]Segurança para operações internas via API Key, garantindo que apenas outros serviços autorizados possam modificar o catálogo. [cite: 57, 31]
+* Segurança para operações internas via API Key, garantindo que apenas outros serviços autorizados possam modificar o catálogo. [cite: 57, 31]
 
 ## 🛠️ Arquitetura e Tecnologias
 
 O projeto segue uma arquitetura em camadas para uma clara separação de responsabilidades (API, Lógica de Negócio, Repositório), consistente com os outros serviços do ecossistema.
 
 ### Tecnologias Utilizadas
-* [cite_start]**Linguagem:** Go [cite: 13]
+* **Linguagem:** Go [cite: 13]
 * **Banco de Dados:** PostgreSQL
 * **Containerização:** Docker & Docker Compose
 * **Roteador HTTP:** Chi

@@ -12,11 +12,11 @@ import (
 
 type ProductService interface {
 	Create(ctx context.Context, name, description string, price float64, stock int) error
-	GetProductByID(ctx context.Context, id int64) (*domain.Product, error)
+	GetProductByID(ctx context.Context, id ulid.ULID) (*domain.Product, error)
 	ListProducts(ctx context.Context) ([]*domain.Product, error)
-	ReduceStock(ctx context.Context, id int64, quantity int) error
-	Update(ctx context.Context, product *domain.Product) error
-	Delete(ctx context.Context, id int64) error
+	ReduceStock(ctx context.Context, id ulid.ULID, quantity int) error
+	Update(ctx context.Context, userID ulid.ULID, name, description string, price float64, stock int) error
+	Delete(ctx context.Context, id ulid.ULID) error
 }
 
 type productService struct {
@@ -43,7 +43,7 @@ func (s *productService) Create(ctx context.Context, name, description string, p
 	return s.productRepository.Create(ctx, product)
 }
 
-func (s *productService) GetProductByID(ctx context.Context, id int64) (*domain.Product, error) {
+func (s *productService) GetProductByID(ctx context.Context, id ulid.ULID) (*domain.Product, error) {
 	return s.productRepository.GetProductByID(ctx, id)
 }
 
@@ -51,14 +51,23 @@ func (s *productService) ListProducts(ctx context.Context) ([]*domain.Product, e
 	return s.productRepository.ListProducts(ctx)
 }
 
-func (s *productService) ReduceStock(ctx context.Context, id int64, quantity int) error {
+func (s *productService) ReduceStock(ctx context.Context, id ulid.ULID, quantity int) error {
 	return s.productRepository.ReduceStock(ctx, id, quantity)
 }
 
-func (s *productService) Update(ctx context.Context, product *domain.Product) error {
+func (s *productService) Update(ctx context.Context, userID ulid.ULID, name, description string, price float64, stock int) error {
+
+	product := &domain.Product{
+		ID:          userID,
+		Name:        name,
+		Description: description,
+		Price:       price,
+		Stock:       stock,
+	}
+
 	return s.productRepository.Update(ctx, product)
 }
 
-func (s *productService) Delete(ctx context.Context, id int64) error {
+func (s *productService) Delete(ctx context.Context, id ulid.ULID) error {
 	return s.productRepository.Delete(ctx, id)
 }

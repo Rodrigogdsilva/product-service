@@ -55,7 +55,7 @@ Todas as respostas de erro (status `4xx` ou `5xx`) seguem o formato:
 | `500 Internal Server Error` | `INTERNAL_SERVER_ERROR` | Ocorreu uma falha inesperada no servidor. |
 
 ## 🚀 Como Executar o Projeto
-Siga os passos abaixo para colocar o ambiente de desenvolvimento no ar (baseado no auth-service).
+Siga os passos abaixo para colocar o ambiente de desenvolvimento no ar.
 
 ### Pré-requisitos
 * [Go](https://go.dev/doc/install) (versão 1.24+)

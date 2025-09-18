@@ -32,12 +32,21 @@ func (s *Server) Run() {
 
 	// --- Configuração das Rotas ---
 	// Rotas Públicas
-	router.Post("/create", apiHandler.HandleCreate)
 	router.Get("/{id}", apiHandler.HandleGet)
 	router.Get("/list", apiHandler.HandleList)
-	router.Put("/reduce-stock/{id}", apiHandler.HandleReduceStock)
-	router.Put("/{id}", apiHandler.HandleUpdate)
-	router.Delete("/{id}", apiHandler.HandleDelete)
+
+	// Rotas Protegidas
+	router.Group(func(r chi.Router) {
+		r.Use(apiHandler.JWTAuthMiddleware)
+		r.Post("/create", apiHandler.HandleCreate)
+		r.Put("/products/{id}", apiHandler.HandleUpdate)
+		r.Delete("/products/{id}", apiHandler.HandleDelete)
+	})
+
+	router.Group(func(r chi.Router) {
+		r.Use(apiHandler.APIKeyAuthMiddleware)
+		r.Put("/products/reduce-stock/{id}", apiHandler.HandleReduceStock)
+	})
 
 	log.Printf("Servidor de Produtos iniciado em %s", s.cfg.ListenAddr)
 	if err := http.ListenAndServe(s.cfg.ListenAddr, router); err != nil {

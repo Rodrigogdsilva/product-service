@@ -1,0 +1,35 @@
+services:
+  product-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_PRODUCT}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PRODUCT}
+      POSTGRES_DB: ${POSTGRES_DB_PRODUCT}
+    volumes:
+      - product_postgres_data:/var/lib/postgresql/data
+
+  product-app:
+    build: ./product-service
+    ports:
+      - "8083:8083"
+    env_file:
+      - ./.env
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER_PRODUCT}:${POSTGRES_PASSWORD_PRODUCT}@productdb:5432/${POSTGRES_DB_PRODUCT}?sslmode=disable"
+      LISTEN_ADDR: ":8083"
+    depends_on:
+      - productdb
+      - auth-app
+  
+  product-migrator:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./database:/migrations
+    depends_on:
+      - db
+    entrypoint: ["migrate"]
+
+volumes:
+  product_postgres_data: {}

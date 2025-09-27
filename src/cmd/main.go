@@ -4,6 +4,9 @@ import (
 	"context"
 	"log"
 	"product-service/src/config"
+	"product-service/src/repository"
+	"product-service/src/server"
+	"product-service/src/service"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
@@ -22,5 +25,11 @@ func main() {
 	}
 	defer pool.Close()
 	log.Println("Successfully connected to PostgreSQL.")
+
+	productRepo := repository.NewProduct(pool)
+	productService := service.NewProductService(productRepo)
+	httpServer := server.NewServer(cfg, productService)
+
+	httpServer.Run()
 
 }

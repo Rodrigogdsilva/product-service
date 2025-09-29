@@ -6,7 +6,7 @@ import (
 	"product-service/src/config"
 	"product-service/src/service"
 
-	"github.com/oklog/ulid/v2"
+	"github.com/google/uuid"
 )
 
 type Handler struct {
@@ -22,11 +22,11 @@ type CreateProduct struct {
 }
 
 type GetProduct struct {
-	ID ulid.ULID `json:"id"`
+	ID uuid.UUID `json:"id"`
 }
 
 type UpdateProduct struct {
-	ID          ulid.ULID `json:"id"`
+	ID          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
 	Price       float64   `json:"price"`
@@ -34,12 +34,12 @@ type UpdateProduct struct {
 }
 
 type ReduceStock struct {
-	ID       ulid.ULID `json:"id"`
+	ID       uuid.UUID `json:"id"`
 	Quantity int       `json:"quantity"`
 }
 
 type DeleteProduct struct {
-	ID ulid.ULID `json:"id"`
+	ID uuid.UUID `json:"id"`
 }
 
 func NewHandler(svc service.ProductService, cfg *config.Config) *Handler {

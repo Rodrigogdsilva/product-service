@@ -1,12 +1,11 @@
 package stubs
 
 import (
-	"math/rand"
 	"product-service/src/domain"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jaswdr/faker"
-	"github.com/oklog/ulid/v2"
 )
 
 type ProductStub struct {
@@ -15,11 +14,10 @@ type ProductStub struct {
 
 func NewProductStub() *ProductStub {
 	f := faker.New()
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(time.Now().UnixNano())), 0)
 
 	return &ProductStub{
 		product: &domain.Product{
-			ID:          ulid.MustNew(ulid.Timestamp(time.Now()), entropy),
+			ID:          uuid.New(),
 			Name:        f.Person().Name(),
 			Description: f.Lorem().Sentence(10),
 			Price:       f.Float64(2, 10, 1000),
@@ -30,7 +28,7 @@ func NewProductStub() *ProductStub {
 	}
 }
 
-func (s *ProductStub) WithID(id ulid.ULID) *ProductStub {
+func (s *ProductStub) WithID(id uuid.UUID) *ProductStub {
 	s.product.ID = id
 	return s
 }

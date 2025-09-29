@@ -3,11 +3,11 @@ package domain
 import (
 	"time"
 
-	"github.com/oklog/ulid/v2"
+	"github.com/google/uuid"
 )
 
 type Product struct {
-	ID          ulid.ULID `json:"id" db:"id"`
+	ID          uuid.UUID `json:"id" db:"id"`
 	Name        string    `json:"name" db:"name"`
 	Description string    `json:"description" db:"description"`
 	Price       float64   `json:"price" db:"price"`

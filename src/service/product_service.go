@@ -13,7 +13,7 @@ type ProductService interface {
 	GetProductByID(ctx context.Context, id uuid.UUID) (*domain.Product, error)
 	ListProducts(ctx context.Context) ([]*domain.Product, error)
 	ReduceStock(ctx context.Context, id uuid.UUID, quantity int) error
-	Update(ctx context.Context, userID uuid.UUID, name, description string, price float64, stock int) error
+	Update(ctx context.Context, product *domain.Product) error
 	Delete(ctx context.Context, id uuid.UUID) error
 }
 
@@ -49,16 +49,7 @@ func (s *productService) ReduceStock(ctx context.Context, id uuid.UUID, quantity
 	return s.productRepository.ReduceStock(ctx, id, quantity)
 }
 
-func (s *productService) Update(ctx context.Context, userID uuid.UUID, name, description string, price float64, stock int) error {
-
-	product := &domain.Product{
-		ID:          userID,
-		Name:        name,
-		Description: description,
-		Price:       price,
-		Stock:       stock,
-	}
-
+func (s *productService) Update(ctx context.Context, product *domain.Product) error {
 	return s.productRepository.Update(ctx, product)
 }
 

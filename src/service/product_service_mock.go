@@ -4,7 +4,7 @@ import (
 	"context"
 	"product-service/src/domain"
 
-	"github.com/oklog/ulid/v2"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -17,7 +17,7 @@ func (m *ProductServiceMock) Create(ctx context.Context, name, description strin
 	return args.Error(0)
 }
 
-func (m *ProductServiceMock) GetProductByID(ctx context.Context, id ulid.ULID) (*domain.Product, error) {
+func (m *ProductServiceMock) GetProductByID(ctx context.Context, id uuid.UUID) (*domain.Product, error) {
 	args := m.Called(ctx, id)
 	if product, ok := args.Get(0).(*domain.Product); ok {
 		return product, args.Error(1)
@@ -33,17 +33,17 @@ func (m *ProductServiceMock) ListProducts(ctx context.Context) ([]*domain.Produc
 	return nil, args.Error(1)
 }
 
-func (m *ProductServiceMock) ReduceStock(ctx context.Context, id ulid.ULID, quantity int) error {
+func (m *ProductServiceMock) ReduceStock(ctx context.Context, id uuid.UUID, quantity int) error {
 	args := m.Called(ctx, id, quantity)
 	return args.Error(0)
 }
 
-func (m *ProductServiceMock) Update(ctx context.Context, userID ulid.ULID, name, description string, price float64, stock int) error {
-	args := m.Called(ctx, userID, name, description, price, stock)
+func (m *ProductServiceMock) Update(ctx context.Context, product *domain.Product) error {
+	args := m.Called(ctx, product)
 	return args.Error(0)
 }
 
-func (m *ProductServiceMock) Delete(ctx context.Context, id ulid.ULID) error {
+func (m *ProductServiceMock) Delete(ctx context.Context, id uuid.UUID) error {
 	args := m.Called(ctx, id)
 	return args.Error(0)
 }

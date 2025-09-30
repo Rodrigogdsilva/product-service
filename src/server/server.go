@@ -3,12 +3,14 @@ package server
 import (
 	"log"
 	"net/http"
+	"os"
 	"product-service/src/api"
 	"product-service/src/config"
 	"product-service/src/service"
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -24,14 +26,23 @@ func NewServer(cfg *config.Config, productService service.ProductService) *Serve
 }
 
 func (s *Server) Run() {
+
+	logger := logrus.New()
+	logger.SetFormatter(&logrus.JSONFormatter{})
+	logger.SetOutput(os.Stdout)
+	logger.SetLevel(logrus.InfoLevel)
+
 	router := chi.NewRouter()
-	router.Use(middleware.Logger)
+	router.Use(middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: logger, NoColor: true}))
 	router.Use(middleware.Recoverer)
 
 	apiHandler := api.NewHandler(s.service, s.cfg)
 
 	// --- Configuração das Rotas ---
 	// Rotas Públicas
+	router.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+		api.WriteJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	})
 	router.Get("/{id}", apiHandler.HandleGet)
 	router.Get("/list", apiHandler.HandleList)
 

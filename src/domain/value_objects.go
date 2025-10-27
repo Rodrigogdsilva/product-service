@@ -17,4 +17,5 @@ var (
 	ErrToUpdateProduct       = errors.New("failed to update product")
 	ErrToDeletegProduct      = errors.New("failed to delete product")
 	ErrScanningRows          = errors.New("failed to scan rows")
+	ErrFailedToUnmarshalJSON = errors.New("failed to unmarshal JSON")
 )

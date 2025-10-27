@@ -55,7 +55,9 @@ func TestHandleCreate_ServiceError(t *testing.T) {
 
 	// Verifica se a resposta JSON do erro está correta
 	var errResponse ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &errResponse)
+	if err := json.Unmarshal(rr.Body.Bytes(), &errResponse); err != nil {
+		t.Fatalf("Failed to unmarshal response body: %v", domain.ErrFailedToUnmarshalJSON)
+	}
 	assert.Equal(t, "INVALID_INPUT", errResponse.Code)
 	assert.Equal(t, domain.ErrInvalidPrice.Error(), errResponse.Message)
 }
@@ -80,7 +82,9 @@ func TestHandleList_Success(t *testing.T) {
 	mockService.AssertExpectations(t)
 
 	var products []*domain.Product
-	json.Unmarshal(rr.Body.Bytes(), &products)
+	if err := json.Unmarshal(rr.Body.Bytes(), &products); err != nil {
+		t.Fatalf("Failed to unmarshal response body: %v", domain.ErrFailedToUnmarshalJSON)
+	}
 	assert.Len(t, products, 2)
 	assert.Equal(t, "Test Product 1", products[0].Name)
 }

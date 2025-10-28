@@ -1,0 +1,41 @@
+name: CI Product Service
+
+# Gatilhos: Executar em push para 'main' ou em qualquer pull request
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo 1: Fazer checkout do código do repositório
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Passo 2: Configurar o ambiente Go
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24.5'
+
+      # Passo 3: Executar os testes
+      - name: Run Tests
+        run: make test
+
+      # Passo 4: Executar o Linter
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - name: Run Linter
+        run: make lint
+
+      # Passo 5: Executar a Verificação de Vulnerabilidades
+      - name: Run Vulnerability Check
+        run: make vulncheck
+
+      # Passo 6: Executar Gitleaks (Opcional, mas recomendado)
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2

@@ -1,11 +1,11 @@
 name: CI Product Service
 
-# Gatilhos: Executar em push para 'main' ou em qualquer pull request
+# Gatilhos: Executar em push para 'master' ou em qualquer pull request
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build_and_test:
